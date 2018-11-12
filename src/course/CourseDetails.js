@@ -2,6 +2,7 @@ import React from "react";
 import "./course.css";
 import Menu from "../app/Menu";
 
+
 function CourseDetails() {
   return (
     <div>

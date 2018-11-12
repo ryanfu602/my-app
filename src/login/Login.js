@@ -85,7 +85,6 @@ class Login extends React.PureComponent {
           </div>
           <div className="field is-grouped is-grouped-centered">
             <p className="control">
-              {/* <button className="button is-primary " onClick={this.handleSubmit}>Login</button> */}
               <input
                 className="button is-primary"
                 type="submit"
