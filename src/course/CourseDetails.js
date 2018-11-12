@@ -1,9 +1,12 @@
 import React from "react";
 import "./course.css";
+import Menu from "../app/Menu";
 
 function CourseDetails() {
   return (
-    <div className="course-body">
+    <div>
+      <Menu />
+      <div className="course-body">
       <h1 className="course-title ">Course details</h1>
       <a className="button is-danger is-hovered course-delete-button">
         Delete course
@@ -78,6 +81,7 @@ function CourseDetails() {
           </p>
         </div>
       </div>
+    </div>
     </div>
   );
 }

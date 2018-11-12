@@ -1,10 +1,13 @@
 import React from "react";
 import "./Dashboard.css";
 import { NavLink } from "react-router-dom";
+import Menu from "../app/Menu";
 
 
 export default function Dashboard() {
   return ( 
+    <div>
+      <Menu />
     <div className="DASHBOARD--BODY">
       <p className="DASHBOARD--TITLE">Welcome to LMS</p>
       <div className="tile is-ancestor">
@@ -50,6 +53,7 @@ export default function Dashboard() {
           </article>
         </div>
       </div>
+    </div>
     </div>
   );
 }
