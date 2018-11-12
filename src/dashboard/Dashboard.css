@@ -1,0 +1,24 @@
+.DASHBOARD--TITLE{
+   padding: 50px;
+   /* background-color: pink; */
+   /* padding-left: 200px; */
+   text-align:center;
+   font-size: 300%;
+   font-weight: 600;
+   height: 140px;
+   color:grey;
+   
+}
+
+ .DASHBOARD--BODY{
+    padding-left: 220px;
+    padding-right: 20px;
+ }
+
+ .dashboard-button{
+    margin-right:10px;
+ }
+
+ .dashboard-button:hover{
+    text-decoration:none;
+}

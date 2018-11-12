@@ -1,0 +1,18 @@
+.lecturer-body{
+    padding-left: 230px;
+    padding-right: 20px;
+    padding-top: 10px;
+ }
+ 
+ 
+ .lecturer-title{
+    font-size:240%;
+    font-weight: 600;
+    color: grey;
+
+ }
+
+ .lecturer-button{
+    margin-top:10px;
+    margin-bottom:20px;
+ }

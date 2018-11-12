@@ -1,0 +1,29 @@
+
+.app-menu{   
+    width:200px;
+    height:100%;
+    position:fixed;
+    background-color: #4a4a4a;
+    overflow-y: auto;
+}
+
+.app-menu-button{   
+    padding-left:10px;
+    width: 90%;
+    
+}
+
+.app-menu-font{   
+    
+}
+
+
+
+.app-menu-font:hover{
+    text-decoration:none;
+}  
+
+
+.active{
+    background-color:#00d1b2;
+}

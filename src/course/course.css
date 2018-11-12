@@ -1,0 +1,66 @@
+.course-body{
+    padding-left: 230px;
+    padding-right: 20px;
+    padding-top: 10px;
+ }
+ 
+ 
+ .course-title{
+    font-size:240%;
+    font-weight: 600;
+    color: grey;
+
+ }
+
+ .course-form{
+    margin-top:10px;
+    border-width:1px;  
+    border-style:solid;
+    border-radius: 5px;
+    border-color:silver;
+    width:800px;
+    padding:20px;
+ }
+
+ .course-button{
+    margin-top:10px;
+    margin-bottom:20px;
+ }
+
+ .course-card{
+    width:300px;
+    border:1px;
+    border-radius:0;
+    margin-right: 20px;
+    margin-bottom: 20px;
+ }
+
+ .course-card-bottom{
+    height: 15px;
+ }
+
+ .course-card-context{
+    height: 40px;
+ }
+
+ .course-cards{
+    display: flex;
+    flex-wrap: wrap;
+ }
+
+ .course-delete-button{
+    margin-top:10px;
+    margin-bottom:10px;
+ }
+
+ .course-form-fee{
+     width:150px;
+ }
+
+ .course-form-title{
+    width:550px;
+}
+
+.course-form-maxstudent{
+    width:150px;
+}
