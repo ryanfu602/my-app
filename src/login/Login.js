@@ -23,7 +23,7 @@ class Login extends React.PureComponent {
 
   handleSubmit = async e => {
     e.preventDefault();
-    const username = this.state.username;
+  
     try {
       this.setState({ validationErrors: {}, isLogin: true });
       const response = await getToken(this.state.username, this.state.password);
