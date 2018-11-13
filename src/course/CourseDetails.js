@@ -1,6 +1,7 @@
 import React from "react";
 import "./course.css";
 import Menu from "../app/Menu";
+import Comfirm from "../app/Comfirm";
 import * as courseAPI from "./courseAPI";
 
 class CourseDetails extends React.PureComponent {
