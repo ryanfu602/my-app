@@ -68,7 +68,7 @@ class StudentList extends React.PureComponent {
                   <td>{x.dateOfBirth}</td>
                   <td>{x.credit}</td>
                   <td>
-                    <a className="button is-white is-small">Details</a>
+                    <button className="button is-white is-small">Details</button>
                   </td>
                 </tr>
               ))}
