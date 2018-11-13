@@ -1,18 +1,30 @@
 import React from "react";
+import "./Loading.css"
+import classnames from "classnames";
 
-function Comfirm() {
+function Comfirm({ active, onComfire, onCancel, title, children }) {
   return (
-    <div className="modal">
+    <div className={classnames("modal", { "is-active": active })}>
       <div className="modal-background" />
       <div className="modal-card">
         <header className="modal-card-head">
-          <p className="modal-card-title">Modal title</p>
-          <button className="delete" aria-label="close" />
+          <p className="modal-card-title">{title}</p>
+          <button className="delete" aria-label="close" onClick={onCancel} />
         </header>
-        <section className="modal-card-body" />
+        <section className="modal-card-body">{children}</section>
         <footer className="modal-card-foot">
-          <button className="button is-success">Save changes</button>
-          <button className="button">Cancel</button>
+          <button
+            className="button is-primary comfirm-button"
+            onClick={onComfire}
+          >
+            <span class="icon is-small">
+              <i class="fas fa-check" />
+            </span>
+            <span>YES</span>
+          </button>
+          <button className="button" onClick={onCancel}>
+            Cancel
+          </button>
         </footer>
       </div>
     </div>

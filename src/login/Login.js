@@ -3,7 +3,7 @@ import "./login.css";
 import getToken from "./LoginAPI";
 import { redirect } from "../app/AppFunc";
 import axios from "axios";
-
+import Loading from "../app/Loading";
 class Login extends React.PureComponent {
   constructor() {
     super();
@@ -23,7 +23,7 @@ class Login extends React.PureComponent {
 
   handleSubmit = async e => {
     e.preventDefault();
-  
+
     try {
       this.setState({ validationErrors: {}, isLogin: true });
       const response = await getToken(this.state.username, this.state.password);
@@ -44,6 +44,7 @@ class Login extends React.PureComponent {
   render() {
     return (
       <div className="login-style">
+      { this.state.isLogin&&<Loading />}
         <div>
           <h1 className="login-title">Login LMS</h1>
         </div>

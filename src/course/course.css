@@ -64,3 +64,28 @@
 .course-form-maxstudent{
     width:150px;
 }
+
+
+.course-decoration:hover{
+    text-decoration:none;
+}  
+
+.course-err{
+    border: 1px;
+    border-radius:5px;
+    font-size: 120%;
+    color:white;
+    background-color: #ff3860;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.course-success{
+    border: 1px;
+    border-radius:5px;
+    font-size: 120%;
+    color:white;
+    background-color: #00c4a7;
+    padding: 10px;
+    margin-bottom: 15px;
+}

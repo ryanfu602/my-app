@@ -1,8 +1,11 @@
 import React from "react";
 import "./course.css";
 import Menu from "../app/Menu";
+import Loading from "../app/Loading";
 import Comfirm from "../app/Comfirm";
+import {Link} from "react-router-dom";
 import * as courseAPI from "./courseAPI";
+import { redirect } from "../app/AppFunc";
 
 class CourseDetails extends React.PureComponent {
   constructor() {
@@ -10,7 +13,8 @@ class CourseDetails extends React.PureComponent {
     this.state = {
       isLoading: false,
       course: "",
-      error: ""
+      error: "",
+      comfirm: false
     };
   }
 
@@ -31,8 +35,15 @@ class CourseDetails extends React.PureComponent {
       }
     });
   };
+  handleDelete = () => {
+    this.setState({ comfirm: true });
+  };
+  handleCancelDelete = () => {
+    this.setState({ comfirm: false });
+  };
 
   async componentDidMount() {
+    
     const id = this.props.match.params.id;
     if (this.isCreate()) {
       this.setState({ course: { title: "", fee: "", description: "" } });
@@ -42,7 +53,6 @@ class CourseDetails extends React.PureComponent {
     try {
       const course = await courseAPI.getCourseById(id);
 
-      console.log(course);
       this.setState({ course: course });
     } catch (err) {
       this.setState({ err: err.data.error_description });
@@ -50,16 +60,60 @@ class CourseDetails extends React.PureComponent {
     this.setState({ isLoading: false });
   }
 
+  handleSubmit = async e  => {
+    const id=this.props.match.params.id;
+    this.setState({ isLoading: true });
+    try{
+      if(this.isCreate()==="create") {
+        console.log( "create id =" ,id);
+        await courseAPI.createCourse ( this.state.course );
+      }
+       else{
+        console.log( "select id =" ,id);
+        await courseAPI.updateCourse ( this.state.course,id );
+       } 
+       redirect("/courses");
+    }
+    catch(err){ 
+      this.setState({ error: err.data.message });
+    }
+    this.setState({ isLoading: false });
+    
+};
+
+handleDeleteSubmit = async e  => {
+  this.setState({ comfirm: false });
+  const id=this.props.match.params.id;
+  this.setState({ isLoading: true });
+  try{
+      await courseAPI.deleteCourse ( id  );
+      redirect("/courses");
+  }
+  catch(err){ 
+    this.setState({ error: err.data.message });
+  }
+  this.setState({ isLoading: false });
+  
+};
+
+
   render() {
     return (
       <div>
         <Menu />
-        <div className="course-body">
+        { this.state.isLogin&&<Loading />}
+        <div className="course-body"> 
           <h1 className="course-title ">Course details</h1>
-          {!this.isCreate && (
-            <a className="button is-danger is-hovered course-delete-button">
+          {this.state.error && (
+            <div className="course-err">{this.state.error}</div>
+          )}
+          {!this.isCreate() && (
+            <button
+              className="button is-danger is-hovered course-delete-button"
+              onClick={this.handleDelete}
+            >
               Delete course
-            </a>
+            </button>
           )}
           <div className="course-form">
             <div className="field is-horizontal">
@@ -102,6 +156,25 @@ class CourseDetails extends React.PureComponent {
 
             <div className="field is-horizontal">
               <div className="field-label is-normal">
+                <label className="label">Language</label>
+              </div>
+              <div className="field-body">
+                <div className="field">
+                  <p className="control course-form-fee">
+                    <input
+                      name="language"
+                      className="input"
+                      type="text"
+                      value={this.state.course.language}
+                      onChange={this.handleFieldChange}
+                    />
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="field is-horizontal">
+              <div className="field-label is-normal">
                 <label className="label">Max students</label>
               </div>
               <div className="field-body">
@@ -113,6 +186,7 @@ class CourseDetails extends React.PureComponent {
                         value={this.state.course.maxStudent}
                         onChange={this.handleFieldChange}
                       >
+                        <option>Select</option>
                         <option>10</option>
                         <option>20</option>
                         <option>30</option>
@@ -146,20 +220,31 @@ class CourseDetails extends React.PureComponent {
             <div className="field is-grouped is-grouped-right">
               {this.isCreate() && (
                 <p className="control">
-                  <a className="button is-primary is-hovered ">Create</a>
+                  <button className="button is-primary is-hovered " onClick={this.handleSubmit}>Create</button>
                 </p>
               )}
               {!this.isCreate() && (
                 <p className="control">
-                  <a className="button is-primary is-hovered ">Save</a>
+                  <button className="button is-primary is-hovered " onClick={this.handleSubmit}>Save</button>
                 </p>
               )}
-              <p className="control">
-                <a className="button is-light">Cancel</a>
-              </p>
+               <Link className="button is-light course-decoration" to="/courses">
+               Cancel
+             </Link>
+              {/* <p className="control">
+                <button className="button is-light">Cancel</button>
+              </p> */}
             </div>
           </div>
         </div>
+        <Comfirm
+          active={this.state.comfirm}
+          onComfire={this.handleDeleteSubmit}
+          onCancel={this.handleCancelDelete}
+          title="Are you sure to continue"
+        >
+          Are you sure you want to delete this course?
+        </Comfirm>
       </div>
     );
   }

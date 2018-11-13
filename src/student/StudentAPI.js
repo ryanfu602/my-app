@@ -1,10 +1,27 @@
 import axios from "axios";
 
 
-export function getCourses(){
+export function getStudents( pageNumber ){
+  return new Promise((resolve, reject) => {
+    axios
+      .get(`/api/students?pageNumber=${pageNumber}`)
+      .then(response => {
+        if (response.status >= 200 && response.status < 300) {
+          resolve(response.data);
+        } else {
+          reject(response.response);
+        }
+      })
+      .catch(reject);
+  });
+
+}
+
+
+export function getStudentById( id){
     return new Promise((resolve, reject) => {
         axios
-          .get("/api/courses")
+          .get(`/api/Students/${id}`)
           .then(response => {
             if (response.status >= 200 && response.status < 300) {
               resolve(response.data);
@@ -17,27 +34,10 @@ export function getCourses(){
 
 }
 
-
-export function getCourseById( id){
-    return new Promise((resolve, reject) => {
-        axios
-          .get(`/api/courses/${id}`)
-          .then(response => {
-            if (response.status >= 200 && response.status < 300) {
-              resolve(response.data);
-            } else {
-              reject(response.response);
-            }
-          })
-          .catch(reject);
-      });
-
-}
-
-export function createCourse(course ){
+export function createStudent(Student ){
   return new Promise((resolve, reject) => {
       axios
-        .post("/api/courses",course)
+        .post("/api/Students",Student)
         .then(response => {
           if (response.status >= 200 && response.status < 300) {
             resolve(response.data);
@@ -52,10 +52,10 @@ export function createCourse(course ){
 
 
 
-export function updateCourse(course,id ){
+export function updateStudent(Student,id ){
   return new Promise((resolve, reject) => {
       axios
-        .put(`/api/courses/${id}`,course)
+        .put(`/api/Students/${id}`,Student)
         .then(response => {
           if (response.status >= 200 && response.status < 300) {
             resolve(response.data);
@@ -71,10 +71,10 @@ export function updateCourse(course,id ){
 
 
 
-export function deleteCourse( id ){
+export function deleteStudent( id ){
   return new Promise((resolve, reject) => {
       axios
-        .delete(`/api/courses/${id}`)
+        .delete(`/api/Students/${id}`)
         .then(response => {
           if (response.status >= 200 && response.status < 300) {
             resolve(response.data);

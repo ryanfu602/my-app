@@ -5,9 +5,9 @@ function StudentDetails() {
   return (
     <div className="student-body">
       <h1 className="student-title ">Student details</h1>
-      <a className="button is-danger is-hovered student-delete-button">
+      <button className="button is-danger is-hovered student-delete-button">
         Delete student
-      </a>
+      </button>
 
       <div className="student-form">
         <div className="field is-horizontal">

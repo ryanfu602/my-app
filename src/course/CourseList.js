@@ -1,6 +1,7 @@
 import React from "react";
 import "./course.css";
 import Menu from "../app/Menu";
+import Loading from "../app/Loading";
 import * as courseAPI from "./courseAPI";
 import {Link} from "react-router-dom";
 class CourseList extends React.PureComponent {
@@ -18,8 +19,6 @@ class CourseList extends React.PureComponent {
     this.setState({ isLoading: true });
     try {
       const courses = await courseAPI.getCourses();
-
-      console.log(courses);
       this.setState({ course: courses });
     } catch (err) {
       this.setState({ err: err.data.error_description });
@@ -29,12 +28,13 @@ class CourseList extends React.PureComponent {
   render() {
     return (
       <div>
+        { this.state.isLogin&&<Loading />}
         <Menu />
         <div className="course-body">
           <h1 className="course-title">Courses</h1>
-          <a className="button is-primary is-hovered course-button">
-            Add new Courese
-          </a>
+          <Link className="button is-primary course-button" to="/courses/create">
+              Add new course
+          </Link>
           <div className="course-cards">
             {this.state.course.map(x => (
               <div className="card course-card" key={x.id}>
