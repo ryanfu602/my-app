@@ -36,37 +36,7 @@ class StudentDetails extends React.PureComponent {
     return date;
   };
 
-  // handleDeleteSubmit = async e  => {
-  //   this.setState({ comfirm: false });
-  //   const id=this.props.match.params.id;
-  //   this.setState({ isLoading: true });
-  //   try{
-  //       await cours.studentAPI.deleteCourse ( id  );
-  //       redirect("/courses");
-  //   }
-  //   catch(err){
-  //     this.setState({ error: err.data.message });
-  //   }
-  //   this.setState({ isLoading: false });
 
-  // };
-  handleSubmit = async e => {
-    const id = this.props.match.params.id;
-    this.setState({ isLoading: true });
-    try {
-      if (this.isCreate() === "create") {
-        console.log("create id =", id);
-        await studentAPI.createStudent(this.state.student);
-      } else {
-        console.log("select id =", id);
-        await studentAPI.updateStudent(this.state.student, id);
-      }
-      redirect("/students");
-    } catch (err) {
-      this.setState({ error: err.data.message });
-    }
-    this.setState({ isLoading: false });
-  };
 
   handleFieldChange = e => {
     const {
@@ -86,14 +56,13 @@ class StudentDetails extends React.PureComponent {
     const id = this.props.match.params.id;
     if (this.isCreate()) {
       this.setState({
-        course: {
-          fullName: " ",
-          firstName: " ",
-          lastName: " ",
-          gender: " ",
-          dateOfBirth: " ",
-          email: " ",
-          credit: " "
+        student: {
+          firstName: "",
+          lastName: "",
+          gender: "M",
+          dateOfBirth: "",
+          email: "",
+          credit: "",
         }
       });
       return;
@@ -102,13 +71,18 @@ class StudentDetails extends React.PureComponent {
     this.setState({ isLoading: true });
     try {
       const student = await studentAPI.getStudentById(id);
+      console.log( student.fullName );
       const name = this.getName(student.fullName);
       const dateOfBirth = this.getDateOfBirth(student.dateOfBirth);
+
+
+      console.log( name );
       this.setState({
         student: {
           ...student,
           firstName: name[0],
           lastName: name[1],
+          id:1,
           dateOfBirth: dateOfBirth
         }
       });
@@ -142,9 +116,10 @@ class StudentDetails extends React.PureComponent {
     this.setState({ isLoading: true });
     try {
       if (this.isCreate() === true) {
-        console.log("create id =", id);
+        console.log("create id =", this.state.student);
         await studentAPI.createStudent(this.state.student);
       } else {
+        console.log( this.state.student);
         await studentAPI.updateStudent(this.state.student, id);
       }
       redirect("/students");
@@ -153,6 +128,21 @@ class StudentDetails extends React.PureComponent {
       this.setState({ error: err.data.message });
     }
     this.setState({ isLoading: false, saveComfirm: false });
+  };
+
+  
+  handleDeleteSubmit = async e  => {
+    const id=this.props.match.params.id;
+    this.setState({ isLoading: true });
+    try{
+        await studentAPI.deleteStudent ( id  );
+        redirect("/students");
+    }
+    catch(err){
+      this.setState({ error: err.data.message });
+    }
+    this.setState({ isLoading: false ,deleteComfirm: false});
+
   };
 
   render() {

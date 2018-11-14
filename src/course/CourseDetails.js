@@ -53,7 +53,7 @@ class CourseDetails extends React.PureComponent {
   async componentDidMount() {
     const id = this.props.match.params.id;
     if (this.isCreate()) {
-      this.setState({ course: { title: "", fee: "", description: "" } });
+      this.setState({ course: { title: "", fee: "", description: "",maxStudent:10 } });
       return;
     }
     this.setState({ isLoading: true });
@@ -187,7 +187,6 @@ class CourseDetails extends React.PureComponent {
                         value={this.state.course.maxStudent}
                         onChange={this.handleFieldChange}
                       >
-                        <option>Select</option>
                         <option>10</option>
                         <option>20</option>
                         <option>30</option>

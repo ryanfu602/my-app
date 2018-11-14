@@ -3,13 +3,13 @@ import "./lecturer.css";
 
 function LecturerDetails() {
   return (
-    <div className="student-body">
-      <h1 className="student-title ">Lecturer details</h1>
-      <a className="button is-danger is-hovered student-delete-button">
+    <div className="lecturer-body">
+      <h1 className="lecturer-title ">Lecturer details</h1>
+      <button className="button is-danger is-hovered lecturer-delete-button">
         Delete lecturer
-      </a>
+      </button>
 
-      <div className="student-form">
+      <div className="lecturer-form">
         <div className="field is-horizontal">
           <div className="field-label is-normal">
             <label className="label ">Full name</label>
@@ -42,7 +42,7 @@ function LecturerDetails() {
           </div>
           <div className="field-body">
             <div className="field is-narrow">
-              <div className="control student-form-credit">
+              <div className="control lecturer-form-credit">
                 <div className="select is-fullwidth ">
                   <select>
                     <option>Male</option>
@@ -60,7 +60,7 @@ function LecturerDetails() {
           </div>
           <div className="field-body">
             <div className="field">
-              <div className="control student-form-date">
+              <div className="control lecturer-form-date">
                 <input className="input" type="text" />
               </div>
             </div>
@@ -86,7 +86,7 @@ function LecturerDetails() {
           </div>
           <div className="field-body">
             <div className="field">
-              <div className="control student-form-credit">
+              <div className="control lecturer-form-credit">
                 <input className="input" type="text" />
               </div>
             </div>
