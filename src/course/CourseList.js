@@ -3,7 +3,7 @@ import "./course.css";
 import Menu from "../app/Menu";
 import Loading from "../app/Loading";
 import * as courseAPI from "./courseAPI";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 class CourseList extends React.PureComponent {
   constructor() {
     super();
@@ -14,7 +14,6 @@ class CourseList extends React.PureComponent {
     };
   }
 
-  
   async componentDidMount() {
     this.setState({ isLoading: true });
     try {
@@ -28,12 +27,15 @@ class CourseList extends React.PureComponent {
   render() {
     return (
       <div>
-        { this.state.isLogin&&<Loading />}
+        {this.state.isLogin && <Loading />}
         <Menu />
         <div className="course-body">
           <h1 className="course-title">Courses</h1>
-          <Link className="button is-primary course-button" to="/courses/create">
-              Add new course
+          <Link
+            className="button is-primary course-button"
+            to="/courses/create"
+          >
+            Add new course
           </Link>
           <div className="course-cards">
             {this.state.course.map(x => (
@@ -49,7 +51,6 @@ class CourseList extends React.PureComponent {
                   </div>
                 </div>
                 <footer className="card-footer ">
-        
                   <Link
                     to={`/courses/${x.id}`}
                     className="card-footer-item course-card-bottom"

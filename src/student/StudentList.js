@@ -3,6 +3,7 @@ import "./student.css";
 import * as studentAPI from "./StudentAPI";
 import Menu from "../app/Menu";
 import Loading from "../app/Loading";
+import {Link} from  "react-router-dom"
 
 class StudentList extends React.PureComponent {
   constructor() {
@@ -12,31 +13,88 @@ class StudentList extends React.PureComponent {
       student: [],
       error: "",
       currentpage: 1,
-      totalpage:1
+      totalpage: 1
     };
   }
 
   async componentDidMount() {
     this.setState({ isLoading: true });
     try {
-      const students = await studentAPI.getStudents(this.state.page);
+      const students = await studentAPI.getStudents(this.state.currentpage);
       console.log(students);
       console.log(students.totalPage);
-      this.setState({ student: students.students, totalpage:students.totalPage });
+      this.setState({
+        student: students.students,
+        totalpage: students.totalPage
+      });
     } catch (err) {
       this.setState({ err: err.data.error_description });
     }
     this.setState({ isLoading: false });
   }
 
-  pageList=()=>{
-    let pagelist =[];
+  handleFieldChange = async e => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+    this.setState({ isLoading: true });
+    try {
+      const students = await studentAPI.getStudents(value);
+      console.log(students);
+      console.log(students.totalPage);
+      this.setState({
+        student: students.students,
+        totalpage: students.totalPage
+      });
+    } catch (err) {
+      this.setState({ err: err.data.error_description });
+    }
+    this.setState({ isLoading: false });
+  };
+
+  handlePrevious = async e => {
+    this.setState({ isLoading: true });
+    this.setState({ currentpage: this.state.currentpage - 1 });
+    try {
+      console.log(this.state.currentpage);
+      const students = await studentAPI.getStudents(this.state.currentpage - 1);
+      console.log(students);
+      console.log(students.totalPage);
+      this.setState({
+        student: students.students,
+        totalpage: students.totalPage
+      });
+    } catch (err) {
+      this.setState({ err: err.data.error_description });
+    }
+    this.setState({ isLoading: false });
+  };
+
+  handleNext = async e => {
+    this.setState({ isLoading: true });
+    this.setState({ currentpage: this.state.currentpage + 1 });
+    try {
+      console.log(this.state.currentpage);
+      const students = await studentAPI.getStudents(this.state.currentpage + 1);
+      console.log(students);
+      console.log(students.totalPage);
+      this.setState({
+        student: students.students,
+        totalpage: students.totalPage
+      });
+    } catch (err) {
+      this.setState({ err: err.data.error_description });
+    }
+    this.setState({ isLoading: false });
+  };
+
+  pageList = () => {
+    let pagelist = [];
     let max = this.state.totalpage;
-    for( let i = 1 ;i<=max;i++){
+    for (let i = 1; i <= max; i++) {
       pagelist.push(<option>{i}</option>);
     }
     return pagelist;
-  }
+  };
   render() {
     return (
       <div>
@@ -44,10 +102,12 @@ class StudentList extends React.PureComponent {
         <Menu />
         <div className="student-body">
           <h1 className="student-title">Students</h1>
-          <button className="button is-primary is-hovered student-button">
-            Add new Student
-          </button>
-
+          <Link
+            className="button is-primary course-button"
+            to="/students/create"
+          >
+            Add new student
+          </Link>
           <table className="table">
             <thead>
               <tr>
@@ -68,7 +128,12 @@ class StudentList extends React.PureComponent {
                   <td>{x.dateOfBirth}</td>
                   <td>{x.credit}</td>
                   <td>
-                    <button className="button is-white is-small">Details</button>
+                    <Link
+                    to={`/students/${x.id}`}
+                    className="button is-white"
+                  >
+                    Detail
+                  </Link>
                   </td>
                 </tr>
               ))}
@@ -80,18 +145,26 @@ class StudentList extends React.PureComponent {
                 <div className="control">
                   <div className="select is-fullwidth ">
                     <select
-                      name="selectpage"
+                      name="currentpage"
                       value={this.state.currentpage}
                       onChange={this.handleFieldChange}
                     >
-                     {this.pageList()}
+                      {this.pageList()}
                     </select>
                   </div>
                 </div>
               </div>
             </div>
-            {this.state.currentpage!== 1 && <button class="pagination-previous">Previous</button>}
-            <button class="pagination-next">Next page</button>
+            {this.state.currentpage > 1 && (
+              <button class="pagination-previous" onClick={this.handlePrevious}>
+                Previous
+              </button>
+            )}
+            {this.state.totalpage > this.state.currentpage && (
+              <button class="pagination-next" onClick={this.handleNext}>
+                Next page
+              </button>
+            )}
           </nav>
         </div>
       </div>
