@@ -53,7 +53,7 @@ class CourseDetails extends React.PureComponent {
   async componentDidMount() {
     const id = this.props.match.params.id;
     if (this.isCreate()) {
-      this.setState({ course: { title: "", fee: "", description: "",maxStudent:10 } });
+      this.setState({ course: { title: "", fee:"", description: "",maxStudent:10 } });
       return;
     }
     this.setState({ isLoading: true });

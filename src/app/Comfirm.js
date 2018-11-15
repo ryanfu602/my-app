@@ -17,8 +17,8 @@ function Comfirm({ active, onComfire, onCancel, title, children }) {
             className="button is-primary comfirm-button"
             onClick={onComfire}
           >
-            <span class="icon is-small">
-              <i class="fas fa-check" />
+            <span className="icon is-small">
+              <i className="fas fa-check" />
             </span>
             <span>YES</span>
           </button>

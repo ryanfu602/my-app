@@ -157,12 +157,12 @@ class StudentList extends React.PureComponent {
               </div>
             </div>
             {this.state.currentpage > 1 && (
-              <button class="pagination-previous" onClick={this.handlePrevious}>
+              <button className="pagination-previous" onClick={this.handlePrevious}>
                 Previous
               </button>
             )}
             {this.state.totalpage > this.state.currentpage && (
-              <button class="pagination-next" onClick={this.handleNext}>
+              <button className="pagination-next" onClick={this.handleNext}>
                 Next page
               </button>
             )}
