@@ -92,7 +92,7 @@ class StudentList extends React.PureComponent {
     let pagelist = [];
     let max = this.state.totalpage;
     for (let i = 1; i <= max; i++) {
-      pagelist.push(<option>{i}</option>);
+      pagelist.push(<option key={i}>{i}</option>);
     }
     return pagelist;
   };
@@ -122,7 +122,7 @@ class StudentList extends React.PureComponent {
             </thead>
             <tbody>
               {this.state.student.map(x => (
-                <tr>
+                <tr key={x.id}>
                   <td>{x.fullName}</td>
                   <td>{x.email}}</td>
                   <td>{x.gender}</td>
@@ -140,7 +140,7 @@ class StudentList extends React.PureComponent {
               ))}
             </tbody>
           </table>
-          <nav class="pagination" role="navigation" aria-label="pagination">
+          <nav className="pagination" role="navigation" aria-label="pagination">
             <div className="field-body">
               <div className="field is-narrow">
                 <div className="control">
