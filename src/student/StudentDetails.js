@@ -149,7 +149,7 @@ class StudentDetails extends React.PureComponent {
     return (
       <div>
         <Menu />
-        {this.state.isLogin && <Loading />}
+        {this.state.isLoading && <Loading />}
         <div className="student-body">
           {this.state.error && (
             <div className="course-err">{this.state.error}</div>
@@ -317,7 +317,7 @@ class StudentDetails extends React.PureComponent {
           active={this.state.deleteComfirm}
           onComfire={this.handleDeleteSubmit}
           onCancel={this.handleCancelDelete}
-          title="Are you sure to student"
+          title="Are you sure to continue"
         >
           Are you sure you want to delete this student?
         </Comfirm>
@@ -325,7 +325,7 @@ class StudentDetails extends React.PureComponent {
           active={this.state.saveComfirm}
           onComfire={this.handleSubmit}
           onCancel={this.handleCancelSave}
-          title="Are you sure to student"
+          title="Are you sure to continue"
         >
           Are you sure you want to save this student?
         </Comfirm>

@@ -10,7 +10,7 @@ class LecturerList extends React.PureComponent {
     super();
     this.state = {
       isLoading: false,
-      student: [],
+      lecturer: [],
       error: "",
       currentpage: 1,
       totalpage: 1
@@ -19,18 +19,22 @@ class LecturerList extends React.PureComponent {
 
   async componentDidMount() {
     this.setState({ isLoading: true });
+    
     try {
       const Lecturers = await lecturerAPI.getLecturers();
-      console.log(Lecturers);
-      console.log(Lecturers.totalPage);
       this.setState({
-        student: Lecturers.Lecturers,
-        totalpage: Lecturers.totalPage
+        lecturer: Lecturers,
+        // totalpage: Lecturers.totalPage
       });
     } catch (err) {
       this.setState({ err: err.data.error_description });
     }
     this.setState({ isLoading: false });
+
+    /*test laoding*/ 
+    // setTimeout(function(){this.setState({ isLoading: false })}.bind(this),3000);
+    
+    
   }
 
   handleFieldChange = async e => {
@@ -98,7 +102,7 @@ class LecturerList extends React.PureComponent {
   render() {
     return (
       <div>
-        {this.state.isLogin && <Loading />}
+        {this.state.isLoading && <Loading />}
         <Menu />
         <div className="student-body">
           <h1 className="student-title">Lecturers</h1>
@@ -108,7 +112,7 @@ class LecturerList extends React.PureComponent {
           >
             Add new lecturer
           </Link>
-]
+
           <table className="table">
             <thead>
               <tr>
@@ -120,13 +124,12 @@ class LecturerList extends React.PureComponent {
               </tr>
             </thead>
             <tbody>
-              {/* {this.state.student.map(x => (
+              {this.state.lecturer.map(x => (
                 <tr>
-                  <td>{x.fullName}</td>
-                  <td>{x.email}}</td>
-                  <td>{x.gender}</td>
-                  <td>{x.dateOfBirth}</td>
-                  <td>{x.credit}</td>
+                  <td>{x.staffNumber}</td>
+                  <td>{x.name}</td>
+                  <td>{x.email}</td>
+                  <td>{x.bibliography}</td>
                   <td>
                     <Link
                     to={`/Lecturers/${x.id}`}
@@ -136,7 +139,7 @@ class LecturerList extends React.PureComponent {
                   </Link>
                   </td>
                 </tr>
-              ))} */}
+              ))}
             </tbody>
           </table>
           <nav class="pagination" role="navigation" aria-label="pagination">

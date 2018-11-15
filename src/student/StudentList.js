@@ -31,6 +31,7 @@ class StudentList extends React.PureComponent {
       this.setState({ err: err.data.error_description });
     }
     this.setState({ isLoading: false });
+  
   }
 
   handleFieldChange = async e => {
@@ -98,7 +99,7 @@ class StudentList extends React.PureComponent {
   render() {
     return (
       <div>
-        {this.state.isLogin && <Loading />}
+        {this.state.isLoading && <Loading />}
         <Menu />
         <div className="student-body">
           <h1 className="student-title">Students</h1>
