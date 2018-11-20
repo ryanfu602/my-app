@@ -1,10 +1,10 @@
 import axios from "axios";
 
 
-export function getLecturers(){
+export function getLecturers( pageNumber, sortorder,sortstring ){
     return new Promise((resolve, reject) => {
         axios
-          .get("/api/Lecturer")
+          .get(`/api/Lecturer?pageNumber=${pageNumber}&sortOrder=${sortorder}&sortString=${sortstring}`)
           .then(response => {
             if (response.status >= 200 && response.status < 300) {
               resolve(response.data);

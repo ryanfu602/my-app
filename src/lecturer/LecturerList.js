@@ -13,7 +13,9 @@ class LecturerList extends React.PureComponent {
       lecturer: [],
       error: "",
       currentpage: 1,
-      totalpage: 1
+      totalpage: 1,
+      sortOrder:"asc",
+      sortString:"id"
     };
   }
 
@@ -21,10 +23,10 @@ class LecturerList extends React.PureComponent {
     this.setState({ isLoading: true });
     
     try {
-      const Lecturers = await lecturerAPI.getLecturers();
+      const Lecturers = await lecturerAPI.getLecturers(this.state.currentpage,this.state.sortOrder,this.state.sortString);
       this.setState({
-        lecturer: Lecturers,
-        // totalpage: Lecturers.totalPage
+        lecturer: Lecturers.lecturers,
+        totalpage: Lecturers.totalPage
       });
     } catch (err) {
       this.setState({ err: err.data.error_description });
@@ -42,11 +44,11 @@ class LecturerList extends React.PureComponent {
     this.setState({ [name]: value });
     this.setState({ isLoading: true });
     try {
-      const Lecturers = await lecturerAPI.getLecturers(value);
+      const Lecturers = await lecturerAPI.getLecturers(value,this.state.sortOrder,this.state.sortString);
       console.log(Lecturers);
       console.log(Lecturers.totalPage);
       this.setState({
-        student: Lecturers.Lecturers,
+        lecturer: Lecturers.lecturers,
         totalpage: Lecturers.totalPage
       });
     } catch (err) {
@@ -60,11 +62,11 @@ class LecturerList extends React.PureComponent {
     this.setState({ currentpage: this.state.currentpage - 1 });
     try {
       console.log(this.state.currentpage);
-      const Lecturers = await lecturerAPI.getLecturers(this.state.currentpage - 1);
+      const Lecturers = await lecturerAPI.getLecturers(this.state.currentpage - 1,this.state.sortOrder,this.state.sortString);
       console.log(Lecturers);
       console.log(Lecturers.totalPage);
       this.setState({
-        student: Lecturers.Lecturers,
+        lecturer: Lecturers.lecturers,
         totalpage: Lecturers.totalPage
       });
     } catch (err) {
@@ -78,15 +80,16 @@ class LecturerList extends React.PureComponent {
     this.setState({ currentpage: this.state.currentpage + 1 });
     try {
       console.log(this.state.currentpage);
-      const Lecturers = await lecturerAPI.getLecturers(this.state.currentpage + 1);
-      console.log(Lecturers);
+      const Lecturers = await lecturerAPI.getLecturers(this.state.currentpage + 1,this.state.sortOrder,this.state.sortString);
+      console.log(Lecturers.lecturer);
       console.log(Lecturers.totalPage);
       this.setState({
-        student: Lecturers.Lecturers,
+        lecturer: Lecturers.lecturers,
         totalpage: Lecturers.totalPage
       });
     } catch (err) {
-      this.setState({ err: err.data.error_description });
+      // this.setState({ err: err.data.error_description });
+      console.log(err);
     }
     this.setState({ isLoading: false });
   };
@@ -99,13 +102,50 @@ class LecturerList extends React.PureComponent {
     }
     return pagelist;
   };
+
+
+  handleOrder=async e=>{
+
+
+    const sortstring = e.target.innerHTML.toLowerCase();
+    let order = "asc"
+    console.log( "this.state.sortString=",this.state.sortString);
+    console.log( "this.state.sortOrder=",this.state.sortOrder);
+    if( sortstring === this.state.sortString ){
+      if( this.state.sortOrder === "asc"){
+        order = "desc"
+      }
+      else{
+        order = "asc"
+      }
+    }
+
+    this.setState({ isLoading: true,sortString:sortstring,sortOrder:order });
+
+    try {
+      const lecturer = await lecturerAPI.getLecturers(1,order,sortstring);
+
+      this.setState({
+        lecturer: lecturer.lecturers,
+        totalpage: lecturer.totalPage
+      });
+    } catch (err) {
+        
+         alert( "12312321");
+         console.log( err);
+         this.setState({ err: err.data.error_description });
+    }
+    this.setState({ isLoading: false });
+  }
+
+
   render() {
     return (
       <div>
         {this.state.isLoading && <Loading />}
         <Menu />
-        <div className="student-body">
-          <h1 className="student-title">Lecturers</h1>
+        <div className="lecturer-body">
+          <h1 className="lecturer-title">Lecturers</h1>
           <Link
             className="button is-primary course-button"
             to="/Lecturer/create"
@@ -116,10 +156,10 @@ class LecturerList extends React.PureComponent {
           <table className="table">
             <thead>
               <tr>
-               <th width="10%">StaffNumber</th>
-                <th width="20%">Name</th>
-                <th width="20%">Email</th>
-                <th width="30%">Bibliography</th>
+               <th width="10%" onClick={this.handleOrder}>StaffNumber</th>
+                <th width="20%" onClick={this.handleOrder}>Name</th>
+                <th width="20%" onClick={this.handleOrder}>Email</th>
+                <th width="30%" onClick={this.handleOrder}>Bibliography</th>
                 <th width="10%" />
               </tr>
             </thead>
