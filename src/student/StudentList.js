@@ -125,7 +125,8 @@ class StudentList extends React.PureComponent {
       console.log(students.totalPage);
       this.setState({
         student: students.students,
-        totalpage: students.totalPage
+        totalpage: students.totalPage,
+        currentpage:1
       });
     } catch (err) {
         // this.setState({ err: err.data.error_description });

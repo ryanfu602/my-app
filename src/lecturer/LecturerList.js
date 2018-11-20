@@ -127,7 +127,8 @@ class LecturerList extends React.PureComponent {
 
       this.setState({
         lecturer: lecturer.lecturers,
-        totalpage: lecturer.totalPage
+        totalpage: lecturer.totalPage,
+        currentpage:1
       });
     } catch (err) {
         
