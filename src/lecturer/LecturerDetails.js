@@ -94,7 +94,7 @@ class LecturerDetails extends React.PureComponent {
         console.log( this.state.Lecturer);
         await LecturerAPI.updateLecturer(this.state.Lecturer, id);
       }
-      redirect("/Lecturers");
+      redirect("/Lecturer");
     } catch (err) {
       console.log(err);
       this.setState({ error: err.data.message });
@@ -108,7 +108,7 @@ class LecturerDetails extends React.PureComponent {
     this.setState({ isLoading: true });
     try{
         await LecturerAPI.deleteLecturer ( id  );
-        redirect("/Lecturers");
+        redirect("/Lecturer");
     }
     catch(err){
       this.setState({ error: err.data.message });
@@ -237,7 +237,7 @@ class LecturerDetails extends React.PureComponent {
               )}
 
               <p className="control">
-                <Link className="button is-light" to="/Lecturers">
+                <Link className="button is-light" to="/Lecturer">
                   Cancel
                 </Link>
               </p>

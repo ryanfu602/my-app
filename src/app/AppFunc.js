@@ -1,4 +1,4 @@
-const API_URL="https://lms1210.azurewebsites.net";
+const API_URL="http://localhost:51194";
 const HOST_URL="http://localhost:3000"
 export function getApiUrl() {
     return API_URL || process.env.API_URL;

@@ -13,14 +13,16 @@ class StudentList extends React.PureComponent {
       student: [],
       error: "",
       currentpage: 1,
-      totalpage: 1
+      totalpage: 1,
+      sortOrder:"asc",
+      sortString:"id"
     };
   }
 
   async componentDidMount() {
     this.setState({ isLoading: true });
     try {
-      const students = await studentAPI.getStudents(this.state.currentpage);
+      const students = await studentAPI.getStudents(this.state.currentpage,this.state.sortOrder,this.state.sortString);
       console.log(students);
       console.log(students.totalPage);
       this.setState({
@@ -39,7 +41,7 @@ class StudentList extends React.PureComponent {
     this.setState({ [name]: value });
     this.setState({ isLoading: true });
     try {
-      const students = await studentAPI.getStudents(value);
+      const students = await studentAPI.getStudents(value,this.state.sortOrder,this.state.sortString);
       console.log(students);
       console.log(students.totalPage);
       this.setState({
@@ -57,7 +59,7 @@ class StudentList extends React.PureComponent {
     this.setState({ currentpage: this.state.currentpage - 1 });
     try {
       console.log(this.state.currentpage);
-      const students = await studentAPI.getStudents(this.state.currentpage - 1);
+      const students = await studentAPI.getStudents(this.state.currentpage - 1,this.state.sortOrder,this.state.sortString);
       console.log(students);
       console.log(students.totalPage);
       this.setState({
@@ -75,7 +77,7 @@ class StudentList extends React.PureComponent {
     this.setState({ currentpage: this.state.currentpage + 1 });
     try {
       console.log(this.state.currentpage);
-      const students = await studentAPI.getStudents(this.state.currentpage + 1);
+      const students = await studentAPI.getStudents(this.state.currentpage + 1,this.state.sortOrder,this.state.sortString);
       console.log(students);
       console.log(students.totalPage);
       this.setState({
@@ -83,7 +85,8 @@ class StudentList extends React.PureComponent {
         totalpage: students.totalPage
       });
     } catch (err) {
-      this.setState({ err: err.data.error_description });
+      // this.setState({ err: err.data.error_description });
+      console.log( err);
     }
     this.setState({ isLoading: false });
   };
@@ -96,6 +99,41 @@ class StudentList extends React.PureComponent {
     }
     return pagelist;
   };
+
+
+  handleOrder=async e=>{
+
+
+    const sortstring = e.target.innerHTML.toLowerCase();
+    let order = "asc"
+    console.log( "this.state.sortString=",this.state.sortString);
+    console.log( "this.state.sortOrder=",this.state.sortOrder);
+    if( sortstring === this.state.sortString ){
+      if( this.state.sortOrder === "asc"){
+        order = "desc"
+      }
+      else{
+        order = "asc"
+      }
+    }
+
+    this.setState({ isLoading: true,sortString:sortstring,sortOrder:order });
+
+    try {
+      const students = await studentAPI.getStudents(1,order,sortstring);
+      console.log(students);
+      console.log(students.totalPage);
+      this.setState({
+        student: students.students,
+        totalpage: students.totalPage
+      });
+    } catch (err) {
+        // this.setState({ err: err.data.error_description });
+         alert( "12312321");
+         console.log( err);
+    }
+    this.setState({ isLoading: false });
+  }
   render() {
     return (
       <div>
@@ -105,32 +143,34 @@ class StudentList extends React.PureComponent {
           <h1 className="student-title">Students</h1>
           <Link
             className="button is-primary course-button"
-            to="/students/create"
+            to="/student/create"
           >
             Add new student
           </Link>
           <table className="table">
             <thead>
               <tr>
-                <th width="25%">Name</th>
-                <th width="30%">Email</th>
-                <th width="10%">Gender</th>
-                <th width="15%">Date of birth</th>
-                <th width="10%">Credit</th>
+                <th width="12%" onClick={this.handleOrder} >FirstName</th>
+                <th width="12%" onClick={this.handleOrder} >LastName</th>
+                <th width="30%" onClick={this.handleOrder} >Email</th>
+                <th width="10%" onClick={this.handleOrder}>Gender</th>
+                <th width="15%" onClick={this.handleOrder}>Date of birth</th>
+                <th width="10%" onClick={this.handleOrder}>Credit</th>
                 <th width="10%" />
               </tr>
             </thead>
             <tbody>
               {this.state.student.map(x => (
                 <tr key={x.id}>
-                  <td>{x.fullName}</td>
-                  <td>{x.email}}</td>
+                 <td>{x.firstName}</td>
+                  <td>{x.lastName}</td>
+                  <td>{x.email}</td>
                   <td>{x.gender}</td>
                   <td>{x.dateOfBirth}</td>
                   <td>{x.credit}</td>
                   <td>
                     <Link
-                    to={`/students/${x.id}`}
+                    to={`/student/${x.id}`}
                     className="button is-white"
                   >
                     Detail

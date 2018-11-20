@@ -20,7 +20,8 @@ class CourseList extends React.PureComponent {
       const courses = await courseAPI.getCourses();
       this.setState({ course: courses });
     } catch (err) {
-      this.setState({ err: err.data.error_description });
+      console.log( err);
+      // this.setState({ err: err.data.error_description });
     }
     this.setState({ isLoading: false });
   }
@@ -33,7 +34,7 @@ class CourseList extends React.PureComponent {
           <h1 className="course-title">Courses</h1>
           <Link
             className="button is-primary course-button"
-            to="/courses/create"
+            to="/course/create"
           >
             Add new course
           </Link>
@@ -47,12 +48,12 @@ class CourseList extends React.PureComponent {
                 </header>
                 <div className="card-content">
                   <div className="content course-card-context">
-                    {x.description}}
+                    {x.description}
                   </div>
                 </div>
                 <footer className="card-footer ">
                   <Link
-                    to={`/courses/${x.id}`}
+                    to={`/course/${x.id}`}
                     className="card-footer-item course-card-bottom"
                   >
                     Open

@@ -108,7 +108,7 @@ class LecturerList extends React.PureComponent {
           <h1 className="student-title">Lecturers</h1>
           <Link
             className="button is-primary course-button"
-            to="/Lecturers/create"
+            to="/Lecturer/create"
           >
             Add new lecturer
           </Link>
@@ -132,7 +132,7 @@ class LecturerList extends React.PureComponent {
                   <td>{x.bibliography}</td>
                   <td>
                     <Link
-                    to={`/Lecturers/${x.id}`}
+                    to={`/Lecturer/${x.id}`}
                     className="button is-white"
                   >
                     Detail

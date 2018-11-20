@@ -4,7 +4,7 @@ import axios from "axios";
 export function getLecturers(){
     return new Promise((resolve, reject) => {
         axios
-          .get("/api/Lecturers")
+          .get("/api/Lecturer")
           .then(response => {
             if (response.status >= 200 && response.status < 300) {
               resolve(response.data);
@@ -21,7 +21,7 @@ export function getLecturers(){
 export function getLecturerById( id){
     return new Promise((resolve, reject) => {
         axios
-          .get(`/api/Lecturers/${id}`)
+          .get(`/api/Lecturer/${id}`)
           .then(response => {
             if (response.status >= 200 && response.status < 300) {
               resolve(response.data);
@@ -37,7 +37,7 @@ export function getLecturerById( id){
 export function createLecturer(Lecturer ){
   return new Promise((resolve, reject) => {
       axios
-        .post("/api/Lecturers",Lecturer)
+        .post("/api/Lecturer",Lecturer)
         .then(response => {
           if (response.status >= 200 && response.status < 300) {
             resolve(response.data);
@@ -55,7 +55,7 @@ export function createLecturer(Lecturer ){
 export function updateLecturer(Lecturer,id ){
   return new Promise((resolve, reject) => {
       axios
-        .put(`/api/Lecturers/${id}`,Lecturer)
+        .put(`/api/Lecturer/${id}`,Lecturer)
         .then(response => {
           if (response.status >= 200 && response.status < 300) {
             resolve(response.data);
@@ -74,7 +74,7 @@ export function updateLecturer(Lecturer,id ){
 export function deleteLecturer( id ){
   return new Promise((resolve, reject) => {
       axios
-        .delete(`/api/Lecturers/${id}`)
+        .delete(`/api/Lecturer/${id}`)
         .then(response => {
           if (response.status >= 200 && response.status < 300) {
             resolve(response.data);

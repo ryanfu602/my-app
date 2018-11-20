@@ -78,7 +78,7 @@ class CourseDetails extends React.PureComponent {
         console.log("select id =", id);
         await courseAPI.updateCourse(this.state.course, id);
       }
-      redirect("/courses");
+      redirect("/course");
     } catch (err) {
       this.setState({ error: err.data.message });
     }
@@ -91,7 +91,7 @@ class CourseDetails extends React.PureComponent {
     this.setState({ isLoading: true });
     try {
       await courseAPI.deleteCourse(id);
-      redirect("/courses");
+      redirect("/course");
     } catch (err) {
       this.setState({ error: err.data.message });
     }
@@ -238,7 +238,7 @@ class CourseDetails extends React.PureComponent {
                   </button>
                 </p>
               )}
-              <Link className="button is-light course-decoration" to="/courses">
+              <Link className="button is-light course-decoration" to="/course">
                 Cancel
               </Link>
             </div>

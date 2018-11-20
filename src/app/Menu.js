@@ -11,13 +11,13 @@ function Menu( ) {
           <NavLink className="app-menu-font" activeClassName="active"  to="/dashboard">Dashboard</NavLink>
         </li>
         <li>
-          <NavLink className="app-menu-font" activeClassName="active" to="/courses">Courses</NavLink>
+          <NavLink className="app-menu-font" activeClassName="active" to="/course">Courses</NavLink>
         </li>
         <li>
-          <NavLink className="app-menu-font" activeClassName="active"  to="/lecturers">Lecturers</NavLink>
+          <NavLink className="app-menu-font" activeClassName="active"  to="/lecturer">Lecturers</NavLink>
         </li>
         <li>
-          <NavLink className="app-menu-font" activeClassName="active" to="/students">Students</NavLink>
+          <NavLink className="app-menu-font" activeClassName="active" to="/student">Students</NavLink>
         </li>
       </ul>
     </aside>

@@ -17,10 +17,10 @@ export default function Dashboard() {
             <p className="subtitle">
               All kinds of courses needed for IT industry
             </p>
-            <NavLink className="button is-primary is-inverted is-outlined dashboard-button" to="/courses/create">
+            <NavLink className="button is-primary is-inverted is-outlined dashboard-button" to="/course/create">
               Add new course
             </NavLink>
-            <NavLink className="button is-primary is-inverted is-outlined dashboard-button" to="/courses">
+            <NavLink className="button is-primary is-inverted is-outlined dashboard-button" to="/course">
               All course
             </NavLink>
           </article>
@@ -29,10 +29,10 @@ export default function Dashboard() {
           <article className="DASHBOARD--ART tile is-child notification is-warning">
             <p className="title">Lecturers</p>
             <p className="subtitle">Best lecturers in IT world</p>
-            <NavLink className="button is-primary is-inverted is-outlined dashboard-button" to="/lecturers/create">
+            <NavLink className="button is-primary is-inverted is-outlined dashboard-button" to="/lecturer/create">
               Add new lecture
             </NavLink>
-            <NavLink className="button is-primary is-inverted is-outlined dashboard-button" to="/lecturers">
+            <NavLink className="button is-primary is-inverted is-outlined dashboard-button" to="/lecturer">
               All lecture
             </NavLink>
           </article>
@@ -43,10 +43,10 @@ export default function Dashboard() {
           <article className="DASHBOARD--ART tile is-child notification is-info">
             <p className="title">Students</p>
             <p className="subtitle">Hard-working and smart students</p>
-            <NavLink className="button is-primary is-inverted is-outlined dashboard-button" to="/students/create">
+            <NavLink className="button is-primary is-inverted is-outlined dashboard-button" to="/student/create">
               Add new student
             </NavLink>
-            <NavLink className="button is-primary is-inverted is-outlined dashboard-button" to="/students">
+            <NavLink className="button is-primary is-inverted is-outlined dashboard-button" to="/student">
               All student
             </NavLink>
 

@@ -13,6 +13,7 @@ function getToken(username, password) {
         if (response.status >= 200 && response.status < 300) {
           resolve(response.data);
         } else {
+          console.log( "response",response);
           reject(response.response);
         }
       })

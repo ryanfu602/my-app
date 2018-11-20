@@ -37,7 +37,9 @@ class Login extends React.PureComponent {
       localStorage.setItem("access_token", response.access_token);
       redirect("/");
     } catch (err) {
-      this.setState({ loginError: err.data.error_description, isLogin: false });
+      // this.setState({ loginError: err.data.error_description, isLogin: false });
+      this.setState({ loginError:"The user name or password is incorrect", isLogin: false });
+
     }
   };
 

@@ -72,16 +72,15 @@ class StudentDetails extends React.PureComponent {
     try {
       const student = await studentAPI.getStudentById(id);
       console.log( student.fullName );
-      const name = this.getName(student.fullName);
+      // const name = this.getName(student.fullName);
       const dateOfBirth = this.getDateOfBirth(student.dateOfBirth);
 
 
-      console.log( name );
       this.setState({
         student: {
           ...student,
-          firstName: name[0],
-          lastName: name[1],
+          // firstName: name[0],
+          // lastName: name[1],
           id:1,
           dateOfBirth: dateOfBirth
         }
@@ -122,7 +121,7 @@ class StudentDetails extends React.PureComponent {
         console.log( this.state.student);
         await studentAPI.updateStudent(this.state.student, id);
       }
-      redirect("/students");
+      redirect("/student");
     } catch (err) {
       console.log(err);
       this.setState({ error: err.data.message });
@@ -136,7 +135,7 @@ class StudentDetails extends React.PureComponent {
     this.setState({ isLoading: true });
     try{
         await studentAPI.deleteStudent ( id  );
-        redirect("/students");
+        redirect("/student");
     }
     catch(err){
       this.setState({ error: err.data.message });
@@ -306,7 +305,7 @@ class StudentDetails extends React.PureComponent {
               )}
 
               <p className="control">
-                <Link className="button is-light" to="/students">
+                <Link className="button is-light" to="/student">
                   Cancel
                 </Link>
               </p>
