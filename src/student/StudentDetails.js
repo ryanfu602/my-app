@@ -3,11 +3,13 @@ import "./student.css";
 import { redirect } from "../app/AppFunc";
 import Menu from "../app/Menu";
 import Loading from "../app/Loading";
+import StudentCourse from "./StudentCourse";
 import Comfirm from "../app/Comfirm";
 import { Link } from "react-router-dom";
 import * as studentAPI from "./StudentAPI";
 import ModernDatepicker from "react-modern-datepicker";
 import moment from "moment";
+import * as courseAPI from "../course/courseAPI";
 
 class StudentDetails extends React.PureComponent {
   constructor() {
@@ -16,9 +18,13 @@ class StudentDetails extends React.PureComponent {
     this.state = {
       isLoading: false,
       student: "",
+      course: [],
+      courseList: [],
+      newList: [],
       error: "",
       deleteComfirm: false,
-      saveComfire: false
+      saveComfire: false,
+      courseComfire: false
     };
   }
   isCreate = () => {
@@ -60,7 +66,7 @@ class StudentDetails extends React.PureComponent {
           firstName: "",
           lastName: "",
           gender: "M",
-          dateOfBirth:  moment(),
+          dateOfBirth: moment(),
           email: "",
           credit: ""
         }
@@ -87,6 +93,21 @@ class StudentDetails extends React.PureComponent {
       console.log(err);
       this.setState({ err: err.data.error_description });
     }
+
+    try {
+      const course = await courseAPI.getCourses();
+
+      const courseSelectd = { ...course, selectd: false };
+
+      console.log("courseSelectd", courseSelectd);
+
+      this.setState({ courseList: course });
+      console.log(course);
+    } catch (err) {
+      console.log(err);
+      this.setState({ err: err.data.error_description });
+    }
+
     this.setState({ isLoading: false });
   }
 
@@ -102,6 +123,55 @@ class StudentDetails extends React.PureComponent {
   };
   handleCancelSave = () => {
     this.setState({ saveComfirm: false });
+  };
+
+  handleCourse = async () => {
+    console.log("courselist=", this.state.courseList);
+    console.log("course=", this.state.course);
+
+    const copy = [];
+    let selectd = false;
+    let studentCourseId = 0;
+    const id = this.props.match.params.id;
+
+    try {
+      const studentcourse = await studentAPI.getStudentCourses(id);
+
+      this.setState({ course: studentcourse });
+
+      console.log("1 ,2= ", this.state.courseList.length, studentcourse.length);
+      for (let i = 0; i < this.state.courseList.length; i++) {
+        selectd = false;
+        studentCourseId = 0;
+        for (let j = 0; j < studentcourse.length; j++) {
+          if (this.state.courseList[i].id === studentcourse[j].courseId) {
+            console.log("studentcourse,j=", j, studentcourse[j]);
+            studentCourseId = studentcourse[j].id;
+            console.log("studentCourseId,j=", studentCourseId);
+            selectd = true;
+          }
+        }
+        const newlist = {
+          ...this.state.courseList[i],
+          selectd: selectd,
+          studentCourseId: studentCourseId
+        };
+        console.log("newlist=", newlist);
+        copy.push(newlist);
+      }
+    } catch (err) {
+      console.log(err);
+      this.setState({ err: err.data.error_description });
+    }
+
+
+
+    console.log("copy=", copy);
+
+    this.setState({ courseComfirm: true, newList: copy });
+  };
+  handleCourseCancel = () => {
+    this.setState({ courseComfirm: false });
   };
 
   isCreate = () => {
@@ -148,6 +218,39 @@ class StudentDetails extends React.PureComponent {
     });
   };
 
+  handleCourseSubmit = async e => {
+    const sc = {
+      studentId: this.props.match.params.id,
+      courseId: e.target.value
+    };
+    console.log("sc", sc);
+
+    this.setState({ isLoading: true });
+    try {
+      await studentAPI.createStudentCourse(sc);
+    } catch (err) {
+      console.log(err);
+      this.setState({ error: err.data.message });
+    }
+    this.setState({ isLoading: false, courseComfirm: false });
+
+  };
+
+  handleCourseDelete = async e => {
+    const id = e.target.value;
+    console.log("id", id);
+
+    this.setState({ isLoading: true });
+    try {
+      await studentAPI.deleteStudentCourses(id);
+    } catch (err) {
+      console.log(err);
+      this.setState({ error: err.data.message });
+    }
+    this.setState({ isLoading: false, courseComfirm: false });
+
+  };
+
   render() {
     return (
       <div>
@@ -164,6 +267,14 @@ class StudentDetails extends React.PureComponent {
               onClick={this.handleDelete}
             >
               Delete student
+            </button>
+          )}
+          {!this.isCreate() && (
+            <button
+              className="button is-primary is-hovered student-delete-button"
+              onClick={this.handleCourse}
+            >
+              Add Course
             </button>
           )}
 
@@ -265,7 +376,6 @@ class StudentDetails extends React.PureComponent {
                 </div>
               </div>
             </div>
-
             <div className="field is-horizontal">
               <div className="field-label is-normal">
                 <label className="label">Credit</label>
@@ -316,6 +426,7 @@ class StudentDetails extends React.PureComponent {
             </div>
           </div>
         </div>
+
         <Comfirm
           active={this.state.deleteComfirm}
           onComfire={this.handleDeleteSubmit}
@@ -332,6 +443,52 @@ class StudentDetails extends React.PureComponent {
         >
           Are you sure you want to save this student?
         </Comfirm>
+        <StudentCourse
+          active={this.state.courseComfirm}
+          onComfire={this.handleCourseSubmit}
+          onCancel={this.handleCourseCancel}
+          title="Select Course"
+        >
+          <table className="table">
+            <thead>
+              <tr>
+                <th width="90%" onClick={this.handleOrder}>
+                  Title
+                </th>
+                <th width="10%" />
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.newList.map(x => (
+                <tr key={x.id}>
+                  <td>{x.title}</td>
+                  {x.selectd === false && (
+                    <td>
+                      <button
+                        className="button is-primary is-hovered "
+                        value={x.id}
+                        onClick={this.handleCourseSubmit}
+                      >
+                        SELECT
+                      </button>
+                    </td>
+                  )}
+                  {x.selectd === true && (
+                    <td>
+                      <button
+                        className="button is-danger is-hovered "
+                        value={x.studentCourseId}
+                        onClick={this.handleCourseDelete}
+                      >
+                        DELETE
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </StudentCourse>
       </div>
     );
   }

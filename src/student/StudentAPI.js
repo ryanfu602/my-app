@@ -47,7 +47,6 @@ export function createStudent(Student ){
         })
         .catch(reject);
     });
-
 }
 
 
@@ -84,6 +83,56 @@ export function deleteStudent( id ){
         })
         .catch(reject);
     });
-
 }
 
+
+
+
+export function createStudentCourse(StudentCourse ){
+  return new Promise((resolve, reject) => {
+      axios
+        .post("/api/student/createstudentcourse",StudentCourse)
+        .then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            resolve(response.data);
+          } else {
+            reject(response.response);
+          }
+        })
+        .catch(reject);
+    });
+}
+
+export function getStudentCourses(id ){
+
+  console.log("id=",id);
+  return new Promise((resolve, reject) => {
+      axios
+        .get(`/api/student/getstudentcourse?studentid=${id}&type="StudentCourse"`,)
+        .then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            resolve(response.data);
+          } else {
+            reject(response.response);
+          }
+        })
+        .catch(reject);
+    });
+}
+
+export function deleteStudentCourses(id ){
+
+  console.log("id=",id);
+  return new Promise((resolve, reject) => {
+      axios
+        .delete(`/api/student/getstudentcourse?id=${id}&type="StudentCourse"`,)
+        .then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            resolve(response.data);
+          } else {
+            reject(response.response);
+          }
+        })
+        .catch(reject);
+    });
+}
