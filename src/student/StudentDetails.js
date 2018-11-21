@@ -6,6 +6,8 @@ import Loading from "../app/Loading";
 import Comfirm from "../app/Comfirm";
 import { Link } from "react-router-dom";
 import * as studentAPI from "./StudentAPI";
+import ModernDatepicker from "react-modern-datepicker";
+import moment from "moment";
 
 class StudentDetails extends React.PureComponent {
   constructor() {
@@ -36,8 +38,6 @@ class StudentDetails extends React.PureComponent {
     return date;
   };
 
-
-
   handleFieldChange = e => {
     const {
       target,
@@ -60,9 +60,9 @@ class StudentDetails extends React.PureComponent {
           firstName: "",
           lastName: "",
           gender: "M",
-          dateOfBirth: "",
+          dateOfBirth:  moment(),
           email: "",
-          credit: "",
+          credit: ""
         }
       });
       return;
@@ -71,17 +71,15 @@ class StudentDetails extends React.PureComponent {
     this.setState({ isLoading: true });
     try {
       const student = await studentAPI.getStudentById(id);
-      console.log( student.fullName );
+      console.log(student.fullName);
       // const name = this.getName(student.fullName);
       const dateOfBirth = this.getDateOfBirth(student.dateOfBirth);
-
 
       this.setState({
         student: {
           ...student,
           // firstName: name[0],
           // lastName: name[1],
-          id:1,
           dateOfBirth: dateOfBirth
         }
       });
@@ -118,7 +116,7 @@ class StudentDetails extends React.PureComponent {
         console.log("create id =", this.state.student);
         await studentAPI.createStudent(this.state.student);
       } else {
-        console.log( this.state.student);
+        console.log(this.state.student);
         await studentAPI.updateStudent(this.state.student, id);
       }
       redirect("/student");
@@ -129,19 +127,25 @@ class StudentDetails extends React.PureComponent {
     this.setState({ isLoading: false, saveComfirm: false });
   };
 
-  
-  handleDeleteSubmit = async e  => {
-    const id=this.props.match.params.id;
+  handleDeleteSubmit = async e => {
+    const id = this.props.match.params.id;
     this.setState({ isLoading: true });
-    try{
-        await studentAPI.deleteStudent ( id  );
-        redirect("/student");
-    }
-    catch(err){
+    try {
+      await studentAPI.deleteStudent(id);
+      redirect("/student");
+    } catch (err) {
       this.setState({ error: err.data.message });
     }
-    this.setState({ isLoading: false ,deleteComfirm: false});
+    this.setState({ isLoading: false, deleTteComfirm: false });
+  };
 
+  handleChange = date => {
+    this.setState({
+      student: {
+        ...this.state.student,
+        dateOfBirth: date
+      }
+    });
   };
 
   render() {
@@ -231,12 +235,12 @@ class StudentDetails extends React.PureComponent {
               <div className="field-body">
                 <div className="field">
                   <div className="control student-form-date">
-                    <input
-                      className="input"
-                      type="text"
-                      value={this.state.student.dateOfBirth}
-                      name="dateOfBirth"
-                      onChange={this.handleFieldChange}
+                    <ModernDatepicker
+                      date={this.state.student.dateOfBirth}
+                      format={"YYYY-MM-DD"}
+                      className="color"
+                      onChange={date => this.handleChange(date)}
+                      placeholder={"Select a date"}
                     />
                   </div>
                 </div>

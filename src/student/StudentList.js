@@ -129,9 +129,8 @@ class StudentList extends React.PureComponent {
         currentpage:1
       });
     } catch (err) {
-        // this.setState({ err: err.data.error_description });
-         alert( "12312321");
-         console.log( err);
+        this.setState({ err: err.data.error_description });
+        
     }
     this.setState({ isLoading: false });
   }
@@ -167,7 +166,7 @@ class StudentList extends React.PureComponent {
                   <td>{x.lastName}</td>
                   <td>{x.email}</td>
                   <td>{x.gender}</td>
-                  <td>{x.dateOfBirth}</td>
+                  <td>{x.dateOfBirth.substr(0,10)}</td>
                   <td>{x.credit}</td>
                   <td>
                     <Link
