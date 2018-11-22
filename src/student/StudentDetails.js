@@ -3,7 +3,7 @@ import "./student.css";
 import { redirect } from "../app/AppFunc";
 import Menu from "../app/Menu";
 import Loading from "../app/Loading";
-import StudentCourse from "./StudentCourse";
+import CourseComfirm from "../app/CourseComfirm";
 import Comfirm from "../app/Comfirm";
 import { Link } from "react-router-dom";
 import * as studentAPI from "./StudentAPI";
@@ -443,7 +443,7 @@ class StudentDetails extends React.PureComponent {
         >
           Are you sure you want to save this student?
         </Comfirm>
-        <StudentCourse
+        <CourseComfirm
           active={this.state.courseComfirm}
           onComfire={this.handleCourseSubmit}
           onCancel={this.handleCourseCancel}
@@ -488,7 +488,7 @@ class StudentDetails extends React.PureComponent {
               ))}
             </tbody>
           </table>
-        </StudentCourse>
+        </CourseComfirm>
       </div>
     );
   }
