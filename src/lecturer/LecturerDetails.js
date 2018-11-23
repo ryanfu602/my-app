@@ -24,7 +24,7 @@ class LecturerDetails extends React.PureComponent {
       title: "",
       coursTitle: "",
       courseComfirm: false,
-      deleteCourseComfirm:false
+      deleteCourseComfirm: false
     };
   }
   isCreate = () => {
@@ -158,7 +158,6 @@ class LecturerDetails extends React.PureComponent {
       this.setState({ error: err.data.message });
     }
 
-
     try {
       const course = await LecturerAPI.getLecturerCourse(id);
       if (course.length === 0) {
@@ -174,18 +173,17 @@ class LecturerDetails extends React.PureComponent {
     this.setState({ courseComfirm: false });
   };
   handleDeleteCourse = async () => {
-    console.log( "course=====", this.state.lecturerCourese);
+    console.log("course=====", this.state.lecturerCourese);
     const courseId = this.state.lecturerCourese.id;
     const lecturerId = this.props.match.params.id;
     this.setState({ isLoading: true });
     try {
-      await LecturerAPI.deleteLecturerCourse(lecturerId,courseId);
+      await LecturerAPI.deleteLecturerCourse(lecturerId, courseId);
     } catch (err) {
       console.log(err.data.message);
       this.setState({ error: err.data.message });
     }
 
-    
     try {
       const course = await LecturerAPI.getLecturerCourse(lecturerId);
       if (course.length === 0) {
@@ -198,7 +196,7 @@ class LecturerDetails extends React.PureComponent {
       this.setState({ err: err.data.message });
     }
 
-    this.setState({ isLoading: false,deleteCourseComfirm: false},);
+    this.setState({ isLoading: false, deleteCourseComfirm: false });
   };
   handleCourse = () => {
     this.setState({ courseComfirm: true });
@@ -213,13 +211,12 @@ class LecturerDetails extends React.PureComponent {
   handleSubmitLcDelete = () => {
     this.setState({ deleteCourseComfirm: true });
   };
-  
-  
+
   render() {
     return (
       <div>
         <Menu />
-        {this.state.isLogin && <Loading />}
+        {this.state.isLoading && <Loading />}
         <div className="lecturer-body">
           {this.state.error && (
             <div className="lecturer-err">{this.state.error}</div>
@@ -327,23 +324,24 @@ class LecturerDetails extends React.PureComponent {
                 </div>
               </div>
             </div>
-
-            <div className="field is-horizontal">
-              <div className="field-label is-normal">
-                <label className="label">Course</label>
-              </div>
-              <div className="field-body">
-                <div className="field ">
-                  <div className="control lecturer-form-title">
-                    <input
-                      className="input"
-                      type="text"
-                      value={this.state.lecturerCourese.title}
-                    />
+            {!this.isCreate() && (
+              <div className="field is-horizontal">
+                <div className="field-label is-normal">
+                  <label className="label">Course</label>
+                </div>
+                <div className="field-body">
+                  <div className="field ">
+                    <div className="control lecturer-form-title">
+                      <input
+                        className="input"
+                        type="text"
+                        value={this.state.lecturerCourese.title}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
 
             <div className="field is-grouped is-grouped-right">
               {this.isCreate() && (
@@ -401,9 +399,6 @@ class LecturerDetails extends React.PureComponent {
           Are you sure you want to delete this course?
         </Comfirm>
 
-
-
-        
         <CourseComfirm
           active={this.state.courseComfirm}
           onComfire={this.handleCourseSubmit}
