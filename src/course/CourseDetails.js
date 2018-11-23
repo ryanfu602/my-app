@@ -102,7 +102,7 @@ class CourseDetails extends React.PureComponent {
     return (
       <div>
         <Menu />
-        {this.state.isLogin && <Loading />}
+        {this.state.isLoading && <Loading />}
         <div className="course-body">
           <h1 className="course-title ">Course details</h1>
           {this.state.error && (

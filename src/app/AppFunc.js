@@ -1,5 +1,7 @@
-const API_URL="http://localhost:51194";
-const HOST_URL="http://localhost:3000"
+const API_URL="https://lms20181123125515.azurewebsites.net";
+const HOST_URL="http://react-lms.s3-website-ap-southeast-2.amazonaws.com"
+// const API_URL="https://http://localhost:51194/";
+// const HOST_URL="http://react-lms.s3-website-ap-southeast-2.amazonaws.com"
 export function getApiUrl() {
     return API_URL || process.env.API_URL;
   }

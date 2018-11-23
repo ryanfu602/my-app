@@ -28,7 +28,7 @@ class CourseList extends React.PureComponent {
   render() {
     return (
       <div>
-        {this.state.isLogin && <Loading />}
+        {this.state.isLoading&& <Loading />}
         <Menu />
         <div className="course-body">
           <h1 className="course-title">Courses</h1>
