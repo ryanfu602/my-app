@@ -89,3 +89,9 @@
     padding: 10px;
     margin-bottom: 15px;
 }
+
+.course-validationerror{
+   color:red;
+   font-size: 70%;
+
+}

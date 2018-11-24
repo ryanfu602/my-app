@@ -5,7 +5,41 @@ import Loading from "../app/Loading";
 import Comfirm from "../app/Comfirm";
 import { Link } from "react-router-dom";
 import * as courseAPI from "./courseAPI";
-import { redirect } from "../app/AppFunc";
+import { getValidationErrors, redirect } from "../app/AppFunc";
+import * as yup from "yup";
+import { pick } from "lodash/object";
+import classnames from "classnames";
+
+const schema = yup.object().shape({
+  title: yup
+    .string()
+    .max(50)
+    .label("Title")
+    .required(),
+  language: yup
+    .string()
+    .max(50)
+    .label("Language")
+    .required(),
+  fee: yup
+    .number()
+    .positive()
+    .min(10)
+    .max(5000)
+    .label("Fee")
+    .required(),
+  maxStudent: yup
+    .number()
+    .positive()
+    .min(10)
+    .max(40)
+    .label("Max students")
+    .required(),
+  description: yup
+    .string()
+    .max(250)
+    .label("Description")
+});
 
 class CourseDetails extends React.PureComponent {
   constructor() {
@@ -15,7 +49,8 @@ class CourseDetails extends React.PureComponent {
       course: "",
       error: "",
       saveComfirm: false,
-      deleteComfirm:false
+      deleteComfirm: false,
+      validationErrors: {}
     };
   }
 
@@ -53,7 +88,9 @@ class CourseDetails extends React.PureComponent {
   async componentDidMount() {
     const id = this.props.match.params.id;
     if (this.isCreate()) {
-      this.setState({ course: { title: "", fee:"", description: "",maxStudent:10 } });
+      this.setState({
+        course: { title: "", fee: "", description: "", maxStudent: 10 }
+      });
       return;
     }
     this.setState({ isLoading: true });
@@ -68,6 +105,24 @@ class CourseDetails extends React.PureComponent {
   }
 
   handleSubmit = async e => {
+    const userInput = pick(this.state.course, [
+      "title",
+      "language",
+      "fee",
+      "maxStudent",
+      "description"
+    ]);
+
+    try {
+      await schema.validate(userInput, {
+        abortEarly: false
+      });
+    } catch (err) {
+      const validationErrors = getValidationErrors(err);
+      this.setState({ validationErrors, isLoading: false });
+      return;
+    }
+
     const id = this.props.match.params.id;
     this.setState({ isLoading: true });
     try {
@@ -126,12 +181,19 @@ class CourseDetails extends React.PureComponent {
                   <div className="control">
                     <input
                       name="title"
-                      className="input"
+                      className={classnames("input", {
+                        "is-danger": this.state.validationErrors["title"]
+                      })}
                       type="text"
                       value={this.state.course.title}
                       onChange={this.handleFieldChange}
                     />
                   </div>
+                  {this.state.validationErrors["title"] && (
+                    <p className="course-validationerror">
+                      {this.state.validationErrors["title"]}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -145,12 +207,20 @@ class CourseDetails extends React.PureComponent {
                   <p className="control course-form-fee">
                     <input
                       name="fee"
-                      className="input"
+                      className={classnames("input", {
+                        "is-danger": this.state.validationErrors["fee"]
+                      })}
+                      // className="input  is-danger"
                       type="text"
                       value={this.state.course.fee}
                       onChange={this.handleFieldChange}
                     />
                   </p>
+                  {this.state.validationErrors["fee"] && (
+                    <p className="course-validationerror">
+                      {this.state.validationErrors["fee"]}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -164,12 +234,19 @@ class CourseDetails extends React.PureComponent {
                   <p className="control course-form-fee">
                     <input
                       name="language"
-                      className="input"
+                      className={classnames("input", {
+                        "is-danger": this.state.validationErrors["language"]
+                      })}
                       type="text"
                       value={this.state.course.language}
                       onChange={this.handleFieldChange}
                     />
                   </p>
+                  {this.state.validationErrors["language"] && (
+                    <p className="course-validationerror">
+                      {this.state.validationErrors["language"]}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -193,6 +270,11 @@ class CourseDetails extends React.PureComponent {
                         <option>40</option>
                         <option>50</option>
                       </select>
+                      {this.state.validationErrors["maxStudent"] && (
+                        <p className="course-validationerror">
+                          {this.state.validationErrors["maxStudent"]}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -208,10 +290,18 @@ class CourseDetails extends React.PureComponent {
                   <div className="control">
                     <textarea
                       name="description"
-                      className="textarea"
+                      className={classnames("textarea", {
+                        "is-danger": this.state.validationErrors["description"]
+                      })}
+
                       value={this.state.course.description}
                       onChange={this.handleFieldChange}
                     />
+                    {this.state.validationErrors["description"] && (
+                      <p className="course-validationerror">
+                        {this.state.validationErrors["description"]}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

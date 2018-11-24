@@ -1,6 +1,6 @@
 import React from "react";
 import "./lecturer.css";
-import { redirect } from "../app/AppFunc";
+import { getValidationErrors,redirect } from "../app/AppFunc";
 import Menu from "../app/Menu";
 import Loading from "../app/Loading";
 import Comfirm from "../app/Comfirm";
@@ -8,6 +8,36 @@ import { Link } from "react-router-dom";
 import * as LecturerAPI from "./LecturerAPI";
 import * as courseAPI from "../course/courseAPI";
 import CourseComfirm from "../app/CourseComfirm";
+import { pick } from "lodash/object";
+import classnames from "classnames";
+import * as yup from "yup";
+
+
+const schema = yup.object().shape({
+  staffNumber: yup
+    .string()
+    .max(50)
+    .label("StaffNumber")
+    .required(),
+    name: yup
+    .string()
+    .max(50)
+    .label("Name")
+    .required(),
+    email: yup
+    .string()
+    .max(200)
+    .label("Email")
+    .required(),
+    bibliography: yup
+    .string()
+    .max(250)
+    .label("Bibliography")
+    .required(),
+});
+
+
+
 
 class LecturerDetails extends React.PureComponent {
   constructor() {
@@ -24,7 +54,9 @@ class LecturerDetails extends React.PureComponent {
       title: "",
       coursTitle: "",
       courseComfirm: false,
-      deleteCourseComfirm: false
+      deleteCourseComfirm: false,
+      addCourseflag:false,
+      validationErrors: {}
     };
   }
   isCreate = () => {
@@ -92,7 +124,7 @@ class LecturerDetails extends React.PureComponent {
       this.setState({ err: err.data.error_description });
     }
 
-    this.setState({ isLoading: false });
+    this.setState({ isLoading: false ,addCourseflag:true});
   }
 
   handleDelete = () => {
@@ -114,6 +146,25 @@ class LecturerDetails extends React.PureComponent {
   };
 
   handleSubmit = async e => {
+
+    const userInput = pick(this.state.Lecturer, [
+      "staffNumber",
+      "name",
+      "email",
+      "bibliography"
+    ]);
+
+    try {
+      await schema.validate(userInput, {
+        abortEarly: false
+      });
+    } catch (err) {
+      const validationErrors = getValidationErrors(err);
+      this.setState({ validationErrors, isLoading: false });
+      return;
+    }
+
+
     const id = this.props.match.params.id;
     this.setState({ isLoading: true });
     try {
@@ -170,7 +221,7 @@ class LecturerDetails extends React.PureComponent {
       this.setState({ err: err.data.message });
     }
 
-    this.setState({ courseComfirm: false });
+    this.setState({ courseComfirm: false,isLoading:false });
   };
   handleDeleteCourse = async () => {
     console.log("course=====", this.state.lecturerCourese);
@@ -230,7 +281,7 @@ class LecturerDetails extends React.PureComponent {
               Delete Lecturer
             </button>
           )}
-          {!this.isCreate() && !this.state.lecturerCourese.title && (
+          {!this.isCreate() && !this.state.lecturerCourese.title &&this.state.addCourseflag&& (
             <button
               className="button is-primary is-hovered lecturer-delete-button"
               onClick={this.handleCourse}
@@ -257,13 +308,21 @@ class LecturerDetails extends React.PureComponent {
                 <div className="field">
                   <div className="control lecturer-form-number">
                     <input
-                      className="input"
+                      className={classnames("input", {
+                        "is-danger": this.state.validationErrors["staffNumber"]
+                      })}
                       type="text"
                       value={this.state.Lecturer.staffNumber}
                       name="staffNumber"
                       onChange={this.handleFieldChange}
                     />
+                    
                   </div>
+                  {this.state.validationErrors["staffNumber"] && (
+                    <p className="course-validationerror">
+                      {this.state.validationErrors["staffNumber"]}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -276,12 +335,19 @@ class LecturerDetails extends React.PureComponent {
                 <div className="field">
                   <div className="control">
                     <input
-                      className="input"
+                      className={classnames("input", {
+                        "is-danger": this.state.validationErrors["name"]
+                      })}
                       type="text"
                       value={this.state.Lecturer.name}
                       name="name"
                       onChange={this.handleFieldChange}
                     />
+                    {this.state.validationErrors["name"] && (
+                    <p className="course-validationerror">
+                      {this.state.validationErrors["name"]}
+                    </p>
+                  )}
                   </div>
                 </div>
               </div>
@@ -295,12 +361,19 @@ class LecturerDetails extends React.PureComponent {
                 <div className="field">
                   <div className="control">
                     <input
-                      className="input"
+                      className={classnames("input", {
+                        "is-danger": this.state.validationErrors["email"]
+                      })}
                       type="text"
                       value={this.state.Lecturer.email}
                       name="email"
                       onChange={this.handleFieldChange}
                     />
+                     {this.state.validationErrors["email"] && (
+                    <p className="course-validationerror">
+                      {this.state.validationErrors["email"]}
+                    </p>
+                  )}
                   </div>
                 </div>
               </div>
@@ -314,12 +387,19 @@ class LecturerDetails extends React.PureComponent {
                 <div className="field">
                   <div className="control">
                     <input
-                      className="input"
+                       className={classnames("input", {
+                        "is-danger": this.state.validationErrors["bibliography"]
+                      })}
                       type="text"
                       value={this.state.Lecturer.bibliography}
                       name="bibliography"
                       onChange={this.handleFieldChange}
                     />
+                    {this.state.validationErrors["bibliography"] && (
+                    <p className="course-validationerror">
+                      {this.state.validationErrors["bibliography"]}
+                    </p>
+                  )}
                   </div>
                 </div>
               </div>
