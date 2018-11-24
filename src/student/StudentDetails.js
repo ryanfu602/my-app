@@ -226,7 +226,7 @@ class StudentDetails extends React.PureComponent {
       });
     } catch (err) {
       const validationErrors = getValidationErrors(err);
-      this.setState({ validationErrors, isLoading: false });
+      this.setState({ validationErrors, isLoading: false,saveComfirm: false});
       return;
     }
 
@@ -446,7 +446,7 @@ class StudentDetails extends React.PureComponent {
                 </div>
               </div>
             </div>
-            <div className="field is-horizontal">
+            {/* <div className="field is-horizontal">
               <div className="field-label is-normal">
                 <label className="label ">credit</label>
               </div>
@@ -470,7 +470,7 @@ class StudentDetails extends React.PureComponent {
                   )}
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="field is-horizontal">
               <div className="field-label is-normal">
                 <label className="label">Credit</label>

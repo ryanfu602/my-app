@@ -119,7 +119,7 @@ class CourseDetails extends React.PureComponent {
       });
     } catch (err) {
       const validationErrors = getValidationErrors(err);
-      this.setState({ validationErrors, isLoading: false });
+      this.setState({ validationErrors, isLoading: false,saveComfirm: false });
       return;
     }
 
