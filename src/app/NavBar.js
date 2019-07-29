@@ -1,13 +1,25 @@
 import React from "react";
 import "./NavBar.css";
+import {redirect} from "./AppFunc"
+import axios from "axios";
+
+function handleLogOut() {
+
+    axios.defaults.headers.common.Authorization = "";
+    localStorage.setItem("access_token","");  
+    redirect("/Login");
+}
 
 function NavBar() {
   return (
-    <nav className="navbar navbar-style" role="navigation" aria-label="main navigation">
+    <nav
+      className="navbar navbar-style"
+      role="navigation"
+      aria-label="main navigation"
+    >
       <div className="navbar-brand">
-       <h1>LMS</h1>
-
-        <a
+        <h1>LMS</h1>
+        <p
           role="button"
           className="navbar-burger burger"
           aria-label="menu"
@@ -17,35 +29,16 @@ function NavBar() {
           <span aria-hidden="true" />
           <span aria-hidden="true" />
           <span aria-hidden="true" />
-        </a>
+        </p>
       </div>
 
       <div id="navbarBasicExample" className="navbar-menu">
-        {/* <div className="navbar-start">
-          <a className="navbar-item">Home</a>
-
-          <a className="navbar-item">Documentation</a>
-
-          <div className="navbar-item has-dropdown is-hoverable">
-            <a className="navbar-link">More</a>
-
-            <div className="navbar-dropdown">
-              <a className="navbar-item">About</a>
-              <a className="navbar-item">Jobs</a>
-              <a className="navbar-item">Contact</a>
-              <hr className="navbar-divider" />
-              <a className="navbar-item">Report an issue</a>
-            </div>
-          </div>
-        </div> */}
-
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="buttons">
-              {/* <a className="button is-primary">
-                <strong>Sign up</strong>
-              </a> */}
-              <a className="button is-light">Log out</a>
+              <button className="button is-light" onClick={handleLogOut}>
+                Log out
+              </button>
             </div>
           </div>
         </div>
